@@ -18,7 +18,7 @@ def save_tweets():
 # Endpoint to return "Hello World"
 @app.route('/')
 def hello_world():
-    return 'Hello World.'
+    return 'Hello World!!!!!!!!!!'
 
 # Endpoint to return all tweets
 @app.route('/tweets', methods=['GET'])
