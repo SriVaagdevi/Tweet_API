@@ -3,6 +3,13 @@ import json
 
 app = Flask(__name__)
 
+# Your tweet data (replace this with your actual data or import it)
+tweet_data = [
+    {"id": 1, "text": "This is tweet 1"},
+    {"id": 2, "text": "Another tweet here"},
+    # Add more tweet data as needed
+]
+
 # Load or initialize tweets
 try:
     with open('tweets_data.json','r',encoding='utf-8') as f:
@@ -49,6 +56,26 @@ def get_tweet_by_id(tweet_id):
             raise ValueError("Tweet not found")
     except ValueError as e:
         return str(e), 404  # Not Found
+# Define a POST endpoint for creating a new tweet
+@app.route('/tweets', methods=['POST'])
+def create_tweet():
+    try:
+        data = request.get_json()
+
+        if 'text' not in data:
+            return jsonify({"error": "Incomplete request"}), 400
+
+        new_tweet = {
+            "id": len(tweet_data) + 1,
+            "text": data['text']
+        }
+        
+        tweet_data.append(new_tweet)
+
+        return jsonify({"message": "Tweet created successfully"}), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 if __name__ == '__main__':
     app.run(debug=True)
